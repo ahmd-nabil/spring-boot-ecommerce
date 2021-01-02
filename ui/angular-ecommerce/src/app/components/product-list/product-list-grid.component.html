@@ -1,0 +1,20 @@
+<div class="main-content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div *ngFor="let tempProduct of products" class="col-md-3">
+                    <div class="product-box">
+                        <a href="product-detail.html">
+                            <img src="assets/images/products/placeholder.png" class="img-responsive">
+                        </a>
+                        <a href="product-detail.html">
+                            <h1>{{tempProduct.name}}</h1>
+                        </a>
+                        <div class="price">{{tempProduct.unitPrice | currency:'USD'}}</div>
+                        <a href="#" class="primary-btn">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

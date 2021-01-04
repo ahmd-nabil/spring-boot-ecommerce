@@ -23,11 +23,7 @@ export class ProductListComponent implements OnInit {
 
   listProducts() {
     // check if id paramter is available
-    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
-    if(hasCategoryId)
-      this.currentCategoryId = Number(this.route.snapshot.paramMap.get('id'));
-
-    
+    this.currentCategoryId = Number(this.route.snapshot.paramMap.get('id')); // either found or 0
     // now get the products for given id
     this.productService.getProductList(this.currentCategoryId).subscribe(
       data => {

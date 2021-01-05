@@ -13,6 +13,7 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
   currentCategoryId: number = 0 ;
+  q: string | null| undefined;
   constructor(private productService: ProductService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -24,12 +25,21 @@ export class ProductListComponent implements OnInit {
   listProducts() {
     // check if id paramter is available
     this.currentCategoryId = Number(this.route.snapshot.paramMap.get('id')); // either found or 0
-    // now get the products for given id
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    this.q = this.route.snapshot.paramMap.get('q');
+
+    if(this.q != null){
+      this.productService.searchProducts(this.q).subscribe(
+        data => {this.products = data;}
+      );
+    }
+    else {
+      // now get the products for given id
+      this.productService.getProductList(this.currentCategoryId).subscribe(
+        data => {
+          this.products = data;
+        }
+      )
+    }
   }
 
 }

@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -27,6 +28,11 @@ export class ProductService {
     );
   }
 
+  searchProducts(q: string) : Observable<Product[]> {
+    const theSearchUrl = `${this.baseUrl}/search/findByNameContaining?q=${q}`;
+    return this.httpClient.get<GetProductsResponse>(theSearchUrl).pipe(
+      map(response => response._embedded.products));
+  }
   
   getProductCategories() : Observable<ProductCategory[]> {
     return this.httpClient.get<GetProductCategoriesResponse>(this.categoriesUrl).pipe(

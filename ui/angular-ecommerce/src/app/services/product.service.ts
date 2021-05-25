@@ -12,21 +12,20 @@ import { ProductCategory } from '../common/product-category';
 export class ProductService {
   private baseUrl = 'http://localhost:8080/api/products';
   private categoriesUrl = 'http://localhost:8080/api/product-category';
-
+  private default_size = 20;
   constructor(private httpClient: HttpClient) { }
 
   getProductList(page: number, theCategoryId: number): Observable<GetProductsResponse> {
-    const default_size = 10;
-    let searchUrl = `${this.baseUrl}?page=${page}&size=${default_size}`;
+    let searchUrl = `${this.baseUrl}?page=${page}&size=${this.default_size}`;
     // if we have category id then we will search by id
     // build the search url based on the REST api from springboot
     if(theCategoryId != 0)
-      searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${page}&size=${default_size}`;
+      searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${page}&size=${this.default_size}`;
     return this.httpClient.get<GetProductsResponse>(searchUrl);
   }
 
   searchProducts(q: string, page: number) : Observable<GetProductsResponse> {
-    const theSearchUrl = `${this.baseUrl}/search/findByNameContaining?q=${q}&page=${page}`;
+    const theSearchUrl = `${this.baseUrl}/search/findByNameContaining?q=${q}&page=${page}&size=${this.default_size}`;
     return this.httpClient.get<GetProductsResponse>(theSearchUrl);
   }
   

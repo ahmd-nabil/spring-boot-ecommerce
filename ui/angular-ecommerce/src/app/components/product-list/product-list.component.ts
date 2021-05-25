@@ -15,7 +15,8 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   currentCategoryId: number = 0 ;
   prevCategoryId: number = 0;
-  q: string | null| undefined;
+  q: string | null | undefined;
+  prevQ: string | null | undefined;
 
   pageSize: number = 0;
   totalElements: number = 0;
@@ -38,11 +39,11 @@ export class ProductListComponent implements OnInit {
     this.q = this.route.snapshot.paramMap.get('q');
 
     // check if category changed then reset pagination (work around to prevent staying in the same page even after change of category)
-    if(this.prevCategoryId != this.currentCategoryId) {
+    if(this.prevCategoryId != this.currentCategoryId || this.prevQ != this.q) {
       this.page = 1;
     }
     this.prevCategoryId = this.currentCategoryId;
-
+    this.prevQ = this.q;
     if(this.q != null) {
       this.productService.searchProducts(this.q, this.page - 1).subscribe(data => this.processProductResult(data));
     }

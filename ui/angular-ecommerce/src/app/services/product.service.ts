@@ -15,23 +15,19 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getProductList(theCategoryId: number): Observable<Product[]> {
-
-    // the base case is to get all 100 products
-    let searchUrl = `${this.baseUrl}?size=100`;
+  getProductList(page: number, theCategoryId: number): Observable<GetProductsResponse> {
+    const default_size = 10;
+    let searchUrl = `${this.baseUrl}?page=${page}&size=${default_size}`;
     // if we have category id then we will search by id
     // build the search url based on the REST api from springboot
     if(theCategoryId != 0)
-      searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&size=100`;
-    return this.httpClient.get<GetProductsResponse>(searchUrl).pipe(
-      map(response => response._embedded.products)
-    );
+      searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${page}&size=${default_size}`;
+    return this.httpClient.get<GetProductsResponse>(searchUrl);
   }
 
-  searchProducts(q: string) : Observable<Product[]> {
-    const theSearchUrl = `${this.baseUrl}/search/findByNameContaining?q=${q}`;
-    return this.httpClient.get<GetProductsResponse>(theSearchUrl).pipe(
-      map(response => response._embedded.products));
+  searchProducts(q: string, page: number) : Observable<GetProductsResponse> {
+    const theSearchUrl = `${this.baseUrl}/search/findByNameContaining?q=${q}&page=${page}`;
+    return this.httpClient.get<GetProductsResponse>(theSearchUrl);
   }
   
   getProductCategories() : Observable<ProductCategory[]> {
@@ -49,7 +45,13 @@ export class ProductService {
 interface GetProductsResponse {
   _embedded: {
     products: Product[];
-  }
+  },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number
+    }
 }
 
 interface GetProductCategoriesResponse {

@@ -4,7 +4,7 @@
             <div class="row">
                 <div *ngFor="let tempProduct of products" class="col-md-3">
                     <div class="product-box">
-                        <a routerLink="/products/{{tempProduct.id}}">
+                        <a routerLink="/products/{{tempProduct.id}}" class="first">
                             <img src="{{tempProduct.imageUrl}}" class="img-responsive">
                         </a>
                         <a routerLink="/products/{{ tempProduct.id }}">
@@ -12,6 +12,27 @@
                         </a>
                         <div class="price">{{tempProduct.unitPrice | currency:'USD'}}</div>
                         <a href="#" class="primary-btn">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+            <!--pagination section-->
+            <div class="foot-pagination">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6" style="padding-left: 30%;"> 
+                                <ngb-pagination [(page)]="page"
+                                                [pageSize]="pageSize"
+                                                [collectionSize]="totalElements"
+                                                [maxSize]="2"
+                                                [boundaryLinks]="true"
+                                                (pageChange)="listProducts()"
+                                                >
+                                    
+                                </ngb-pagination>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

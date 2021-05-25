@@ -1,4 +1,5 @@
 ui/angular-ecommerce/src/assets/images/products/*
+ui/angular-ecommerce/node_modules
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

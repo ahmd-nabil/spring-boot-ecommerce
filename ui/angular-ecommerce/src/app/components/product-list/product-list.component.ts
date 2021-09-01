@@ -1,8 +1,9 @@
-import { NumberSymbol } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartItem } from 'src/app/common/cart-item';
 import { GetProductsResponse } from 'src/app/common/GetProductsResponse';
 import { Product } from 'src/app/common/product';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -23,7 +24,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService, 
               private route: ActivatedRoute,
-              private cdr: ChangeDetectorRef) { }
+              private cdr: ChangeDetectorRef,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.listProducts();
@@ -56,6 +58,11 @@ export class ProductListComponent implements OnInit {
       this.totalElements = data.page.totalElements;
       this.totalPages = data.page.totalPages;
       this.page = data.page.number + 1;
+  }
+
+  addToCart(product: Product) {
+    const cartItem = new CartItem(product);
+    this.cartService.addToCart(cartItem);
   }
 
 }

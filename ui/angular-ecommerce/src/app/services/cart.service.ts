@@ -10,8 +10,8 @@ export class CartService {
   totalQuantity: Subject<number> = new Subject();
   totalPrice: Subject<number> = new Subject();
 
-  totalQuantityValue = 0;
-  totalPriceValue = 0;
+  totalQuantityValue: number = 0;
+  totalPriceValue: number = 0;
 
   constructor() {
 
@@ -33,5 +33,21 @@ export class CartService {
         return true;
     }
     return false;
+  }
+
+  updateQuantity(item: CartItem, newQuantity: number) {
+    let index: number = this.cartItems.findIndex(element => element.id === item.id);
+    const prevQuantity = this.cartItems[index].quantity;
+    const unitPrice = this.cartItems[index].unitPrice;
+    if(prevQuantity !== undefined && unitPrice !== undefined) {
+      this.totalQuantityValue += newQuantity - prevQuantity;
+      this.totalPriceValue += (newQuantity - prevQuantity) * (+unitPrice);
+      this.cartItems[index].quantity = newQuantity;
+    }
+    if(newQuantity == 0) {
+      this.cartItems.splice(index, 1);
+    }
+    this.totalQuantity.next(this.totalQuantityValue);
+    this.totalPrice.next(this.totalPriceValue);
   }
 }

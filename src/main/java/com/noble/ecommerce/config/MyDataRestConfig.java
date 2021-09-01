@@ -24,14 +24,15 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     public MyDataRestConfig(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] theUnsupportedActions = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
         // disable HTTP methods for Product, make it READONLY for now
         config.getExposureConfiguration()
                 .forDomainType(Product.class)
-                .withItemExposure(((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions)))
-                .withCollectionExposure(((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions)));
+                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
+                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
         // disable HTTP methods for ProductCategory, make it READONLY for now
         config.getExposureConfiguration()
                 .forDomainType(ProductCategory.class)
